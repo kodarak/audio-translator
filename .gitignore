@@ -1,0 +1,54 @@
+# Secrets and local config
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Virtual environments
+venv/
+.venv/
+venv_*/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Build / packaging
+build/
+dist/
+*.spec.bak
+
+# Logs and runtime data
+logs/
+*.log
+
+# Large / user-specific assets
+models/
+audio_files/
+
+# Local datasets, caches, experiments under src (do not publish)
+src/data/
+src/logs/
+src/pretrained_models/
+src/tmpdir/
+src/tmpdir_lang_id/
+
+# Tooling caches
+.aider.*
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+htmlcov/
+
+# Optional local tools
+upx/
