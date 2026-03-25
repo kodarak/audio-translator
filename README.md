@@ -11,8 +11,8 @@
 ## Швидкий старт
 
 ```powershell
-git clone https://github.com/<ваш-акаунт>/<назва-репозиторію>.git
-cd <назва-репозиторію>
+git clone https://github.com/kodarak/audio-translator.git
+cd audio-translator
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
