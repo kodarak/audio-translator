@@ -13,6 +13,7 @@ import torch
 from langdetect import detect, LangDetectException
 from transformers import WhisperProcessor, WhisperForConditionalGeneration, WhisperTokenizer
 
+from app_paths import hf_hub_cache_dir
 from language_codes import (
     get_language_name,
     get_language_family,
@@ -75,22 +76,20 @@ class WhisperRecognizer:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
-        if getattr(sys, 'frozen', False):
-            base_path = sys._MEIPASS
-            model_dir = os.path.join(base_path, 'transformers_cache')
-        else:
-            model_dir = 'E:\\huggingface_cache\\hub'
-
-
+        model_cache = hf_hub_cache_dir()
         model_id = "openai/whisper-large-v3"
         self.logger.info(f"Loading model: {model_id}")
 
         try:
-            self.processor = WhisperProcessor.from_pretrained(model_id)
+            self.processor = WhisperProcessor.from_pretrained(model_id, cache_dir=model_cache)
             self.model = WhisperForConditionalGeneration.from_pretrained(
-                model_id, torch_dtype=self.torch_dtype, low_cpu_mem_usage=False, use_safetensors=True
+                model_id,
+                torch_dtype=self.torch_dtype,
+                low_cpu_mem_usage=False,
+                use_safetensors=True,
+                cache_dir=model_cache,
             ).to(self.device)
-            self.tokenizer = WhisperTokenizer.from_pretrained(model_id)
+            self.tokenizer = WhisperTokenizer.from_pretrained(model_id, cache_dir=model_cache)
             self.feature_extractor = self.processor.feature_extractor
 
             self.max_target_positions = 2048  # Збільшуємо максимальну довжину для кращого розпізнавання

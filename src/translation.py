@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from ssl import SSLError
@@ -10,6 +9,8 @@ from dotenv import load_dotenv
 from googletrans import Translator as GoogleTranslator
 from transformers import MarianMTModel, MarianTokenizer
 from translate import Translator
+
+from app_paths import hf_hub_cache_dir
 
 load_dotenv()
 
@@ -32,14 +33,7 @@ class Translation:
         }
         self.loaded_models = {}
 
-        # Визначення базового шляху для кешу моделей
-        if getattr(sys, 'frozen', False):
-            # Для .exe (PyInstaller) використовуємо тимчасову папку
-            base_path = sys._MEIPASS
-            self.cache_dir = os.path.join(base_path, 'transformers_cache')
-        else:
-            # Для розробки використовуємо локальний шлях до кешу Hugging Face
-            self.cache_dir = 'E:\\huggingface_cache\\hub'
+        self.cache_dir = hf_hub_cache_dir()
         self.logger.info(f"Using cache directory for models: {self.cache_dir}")
 
     def load_model(self, model_key) -> tuple[Optional[MarianTokenizer], Optional[MarianMTModel]]:
